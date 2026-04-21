@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Get help with Èdè — the Yoruba language learning app. Browse FAQs or contact our support team.">
+  <meta property="og:title" content="Support — Èdè">
+  <meta property="og:description" content="Find answers to common questions about the Èdè Yoruba learning app, or get in touch with our support team.">
+  <meta property="og:image" content="og-image.png">
+  <title>Support — Èdè</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=Noto+Serif:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0B1A0F;
+      --bg-secondary: #122117;
+      --bg-card: #1A2E22;
+      --bg-card-hover: #213828;
+      --bg-input: #0E1E13;
+      --accent-primary: #4ADE80;
+      --accent-secondary: #86EFAC;
+      --accent-warm: #FBBF24;
+      --accent-error: #F87171;
+      --accent-info: #67E8F9;
+      --text-primary: #FFFFFF;
+      --text-secondary: #A7C4B5;
+      --text-muted: #5E8A6F;
+      --border-subtle: #1F3529;
+      --border-focus: #4ADE80;
+      --glass-bg: rgba(18, 33, 23, 0.85);
+      --glass-border: rgba(74, 222, 128, 0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(11, 26, 15, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .nav-logo-dots {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      transform: rotate(-15deg);
+    }
+
+    .nav-logo-dots span {
+      width: 5px; height: 5px;
+      border-radius: 9999px;
+      background: var(--accent-primary);
+    }
+
+    .nav-logo-dots span:nth-child(2) { margin-left: 3px; opacity: 0.75; }
+    .nav-logo-dots span:nth-child(3) { margin-left: 6px; opacity: 0.5; }
+
+    .nav-wordmark {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a.active { color: var(--accent-primary); }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(74, 222, 128, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: #6EE89A;
+      box-shadow: 0 6px 20px rgba(74, 222, 128, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: var(--accent-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid var(--accent-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(74, 222, 128, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .mobile-nav.open { display: flex; }
+
+    .mobile-nav a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .mobile-nav a:hover { color: var(--accent-primary); }
+
+    .mobile-nav-close {
+      position: absolute;
+      top: 22px; right: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 140px 24px 80px;
+      text-align: center;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    }
+
+    .page-hero-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      margin-bottom: 16px;
+    }
+
+    .page-hero-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .search-wrap {
+      position: relative;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px 16px 14px 46px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-input::placeholder { color: var(--text-muted); }
+
+    .search-input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.12);
+    }
+
+    /* FAQ */
+    .section-faq {
+      padding: 80px 0 120px;
+      background: var(--bg-primary);
+    }
+
+    .faq-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .faq-group {
+      margin-bottom: 48px;
+    }
+
+    .faq-group-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-primary);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .faq-item.open {
+      border-color: var(--glass-border);
+    }
+
+    .faq-question {
+      width: 100%;
+      background: var(--bg-card);
+      border: none;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s ease;
+    }
+
+    .faq-question:hover { background: var(--bg-card-hover); }
+
+    .faq-question-text {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .faq-icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 9999px;
+      border: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-primary);
+      font-size: 16px;
+      font-weight: 300;
+      transition: transform 0.2s ease, background 0.2s ease;
+      line-height: 1;
+    }
+
+    .faq-item.open .faq-icon {
+      background: rgba(74, 222, 128, 0.1);
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .faq-answer-inner {
+      padding: 0 24px 20px;
+      background: var(--bg-card);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .faq-answer-inner.hidden-faq { display: none; }
+
+    /* CONTACT */
+    .section-contact {
+      padding: 100px 0;
+      background: var(--bg-secondary);
+    }
+
+    .contact-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+
+    .contact-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin: 16px 0 40px;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+    }
+
+    .form-input,
+    .form-textarea {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: var(--text-muted); }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.12);
+    }
+
+    .form-textarea { resize: vertical; min-height: 120px; }
+
+    .form-submit {
+      margin-top: 8px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg-input);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      padding: 64px 0 48px;
+    }
+
+    .footer-brand-desc {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    .footer-col-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover { color: var(--accent-secondary); }
+
+    .footer-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px 20px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .footer-download-btn:hover {
+      border-color: rgba(74, 222, 128, 0.3);
+      background: var(--bg-card-hover);
+    }
+
+    .footer-dl-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: block;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .footer-dl-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: block;
+      line-height: 1;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-subtle);
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-copy {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px 0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--text-muted);
+      display: none;
+    }
+
+    @media (max-width: 1023px) {
+      .page-hero-heading { font-size: 40px; }
+      .section-heading { font-size: 36px; }
+    }
+
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .page-hero-heading { font-size: 32px; }
+      .page-hero { padding: 110px 24px 60px; }
+      .section-faq { padding: 60px 0 80px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; padding: 48px 0 36px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .section-contact { padding: 72px 0; }
+      .section-heading { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Èdè home">
+      <div class="nav-logo-dots" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <span class="nav-wordmark">Èdè</span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#pricing">Pricing</a></li>
+      <li><a href="support.html" class="active">Support</a></li>
+      <li><a href="#" class="btn-primary" style="padding:10px 22px;font-size:14px;">Download on iOS</a></li>
+    </ul>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav" role="dialog" aria-label="Mobile navigation" aria-modal="true">
+  <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">&times;</button>
+  <a href="index.html#features" onclick="closeMobileNav()">Features</a>
+  <a href="index.html#pricing" onclick="closeMobileNav()">Pricing</a>
+  <a href="support.html">Support</a>
+  <a href="#" class="btn-primary">Download on iOS</a>
+</div>
+
+<main>
+
+  <section class="page-hero" aria-label="Support hero">
+    <h1 class="page-hero-heading">How can we help?</h1>
+    <p class="page-hero-sub">Find answers to common questions or get in touch.</p>
+    <div class="search-wrap">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <circle cx="8" cy="8" r="5.5" stroke="#5E8A6F" stroke-width="1.5"/>
+        <path d="M12.5 12.5l3 3" stroke="#5E8A6F" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="search"
+        class="search-input"
+        id="faqSearch"
+        placeholder="Search for help..."
+        aria-label="Search FAQ"
+        autocomplete="off"
+      >
+    </div>
+  </section>
+
+  <section class="section-faq" aria-label="Frequently asked questions">
+    <div class="container">
+      <div class="faq-inner">
+
+        <div class="no-results" id="noResults">No results found. Try a different search term.</div>
+
+        <div class="faq-group" data-group="getting-started">
+          <div class="faq-group-title">Getting Started</div>
+          <div class="faq-list">
+
+            <div class="faq-item" data-question="What is Èdè?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">What is Èdè?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Èdè is an iOS app that teaches you to speak Yoruba through interactive lessons, AI-powered pronunciation scoring, and real-time conversation practice. It's designed for English speakers, especially those in the diaspora reconnecting with the Yoruba language.</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="Is Èdè free?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">Is Èdè free?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Yes. All lessons, vocabulary, and core features are free. Free accounts include 10 speaking practices and 20 AI conversations per day. Èdè Premium ($7.99/month) unlocks higher daily limits and advanced features like visual pitch comparison.</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="Do I need to know any Yoruba to start?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">Do I need to know any Yoruba to start?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Not at all. Èdè starts from absolute zero. The onboarding teaches you your first three words, and lessons begin with basic greetings.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="faq-group" data-group="account">
+          <div class="faq-group-title">Account &amp; Subscription</div>
+          <div class="faq-list">
+
+            <div class="faq-item" data-question="How do I create an account?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">How do I create an account?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Èdè uses Sign in with Apple. During onboarding, you'll experience a mini-lesson first, then sign in at the end to save your progress.</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="How do I upgrade to Èdè Premium?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">How do I upgrade to Èdè Premium?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Go to Settings in the app and tap on the Subscription section. From there, you can upgrade to Premium for $7.99/month.</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="How do I cancel my subscription?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">How do I cancel my subscription?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Open the app, go to Settings, then Subscription, and tap "Manage Subscription." You can cancel at any time and your premium access continues until the end of your billing period.</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="How do I delete my account?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">How do I delete my account?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Go to Settings &gt; Data &amp; Privacy &gt; Delete Account. This permanently deletes your account, all progress, and all data. This action cannot be undone.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="faq-group" data-group="learning">
+          <div class="faq-group-title">Learning &amp; Features</div>
+          <div class="faq-list">
+
+            <div class="faq-item" data-question="How does pronunciation scoring work?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">How does pronunciation scoring work?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">When you record yourself speaking, Èdè transcribes your speech and analyzes your pitch patterns. It compares your tonal contour against a native reference to score both word accuracy and tonal accuracy. You'll see which syllables had the right tone and which ones need work.</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="What is tonal accuracy?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">What is tonal accuracy?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Yoruba is a tonal language with three main tones: high, mid, and low. The same syllables pronounced with different tones can mean completely different words. Èdè specifically measures whether your pitch rises and falls in the right places.</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="How does spaced repetition work?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">How does spaced repetition work?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Every word you learn enters a review system. Words you get right appear less frequently. Words you struggle with come back more often. Over time, this moves vocabulary into your long-term memory.</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="What happens if I hit my daily limit?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">What happens if I hit my daily limit?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Your speaking and conversation limits reset at midnight each day. If you want more practice, you can upgrade to Èdè Premium for 10x the daily limits.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="faq-group" data-group="technical">
+          <div class="faq-group-title">Technical</div>
+          <div class="faq-list">
+
+            <div class="faq-item" data-question="What devices does Èdè support?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">What devices does Èdè support?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Èdè is currently available on iOS (iPhone and iPad).</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="Does Èdè work offline?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">Does Èdè work offline?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Some features work offline, like browsing vocabulary you've already loaded. Speaking evaluation, AI conversations, and new lesson content require an internet connection.</div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-question="My audio isn't recording. What should I do?">
+              <button class="faq-question" aria-expanded="false">
+                <span class="faq-question-text">My audio isn't recording. What should I do?</span>
+                <span class="faq-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-answer" role="region">
+                <div class="faq-answer-inner">Make sure you've granted Èdè microphone permission in your iPhone Settings. Go to Settings &gt; Èdè &gt; Microphone and make sure it's enabled.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section-contact" id="contact" aria-label="Contact support">
+    <div class="container">
+      <div class="contact-inner">
+        <h2 class="section-heading">Still need help?</h2>
+        <p class="contact-sub">Reach out and we'll get back to you within 24 hours.</p>
+        <form class="contact-form" id="contactForm" novalidate aria-label="Contact form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="contactName">Name</label>
+              <input type="text" id="contactName" name="name" class="form-input" placeholder="Your name" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contactEmail">Email</label>
+              <input type="email" id="contactEmail" name="email" class="form-input" placeholder="you@example.com" autocomplete="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contactMessage">Message</label>
+            <textarea id="contactMessage" name="message" class="form-textarea" placeholder="Describe your issue or question..."></textarea>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:15px 28px;font-size:16px;">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer aria-label="Site footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="nav-logo" aria-label="Èdè home" style="text-decoration:none;">
+          <div class="nav-logo-dots" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="nav-wordmark">Èdè</span>
+        </a>
+        <p class="footer-brand-desc">Learn to speak Yoruba with confidence.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Resources</div>
+        <ul class="footer-links" role="list">
+          <li><a href="support.html">Support</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Get the App</div>
+        <a href="#" class="footer-download-btn" aria-label="Download Èdè on the App Store">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.7 9.05 7.4c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.39-1.32 2.76-2.53 3.99zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" fill="#A7C4B5"/>
+          </svg>
+          <div>
+            <span class="footer-dl-label">Download on the</span>
+            <span class="footer-dl-name">App Store</span>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Èdè. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  const mobileNavClose = document.getElementById('mobileNavClose');
+
+  function openMobileNav() {
+    mobileNav.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburgerBtn.addEventListener('click', openMobileNav);
+  mobileNavClose.addEventListener('click', closeMobileNav);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && mobileNav.classList.contains('open')) closeMobileNav();
+  });
+
+  // FAQ Accordion
+  document.querySelectorAll('.faq-question').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const item = this.closest('.faq-item');
+      const answer = item.querySelector('.faq-answer');
+      const isOpen = item.classList.contains('open');
+
+      if (isOpen) {
+        item.classList.remove('open');
+        answer.style.maxHeight = '0';
+        this.setAttribute('aria-expanded', 'false');
+      } else {
+        item.classList.add('open');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        this.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // FAQ Search
+  const searchInput = document.getElementById('faqSearch');
+  const noResults = document.getElementById('noResults');
+
+  searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+    let anyVisible = false;
+
+    document.querySelectorAll('.faq-item').forEach(function(item) {
+      const q = (item.getAttribute('data-question') || '').toLowerCase();
+      const answerText = (item.querySelector('.faq-answer-inner') || {}).textContent || '';
+      const matches = !query || q.includes(query) || answerText.toLowerCase().includes(query);
+      item.style.display = matches ? '' : 'none';
+      if (matches) anyVisible = true;
+    });
+
+    document.querySelectorAll('.faq-group').forEach(function(group) {
+      const visibleItems = group.querySelectorAll('.faq-item:not([style*="display: none"])');
+      group.style.display = visibleItems.length > 0 ? '' : 'none';
+    });
+
+    noResults.style.display = anyVisible ? 'none' : 'block';
+  });
+
+  // Contact form — basic submit feedback
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    btn.textContent = 'Message sent — we\'ll be in touch.';
+    btn.disabled = true;
+    btn.style.background = 'var(--bg-card)';
+    btn.style.color = 'var(--accent-primary)';
+    btn.style.boxShadow = 'none';
+  });
+</script>
+
+</body>
+</html>
