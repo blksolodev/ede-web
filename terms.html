@@ -343,6 +343,24 @@
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
       padding: 28px 32px;
+      transition: padding 0.3s ease;
+    }
+
+    .legal-toc.collapsed {
+      padding-bottom: 28px;
+    }
+
+    .legal-toc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 16px;
+    }
+
+    .legal-toc.collapsed .legal-toc-header {
+      margin-bottom: 0;
     }
 
     .legal-toc-title {
@@ -352,7 +370,30 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-muted);
-      margin-bottom: 16px;
+    }
+
+    .legal-toc-chevron {
+      width: 16px;
+      height: 16px;
+      color: var(--text-muted);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .legal-toc.collapsed .legal-toc-chevron {
+      transform: rotate(-90deg);
+    }
+
+    .legal-toc-body {
+      overflow: hidden;
+      max-height: 400px;
+      transition: max-height 0.35s ease, opacity 0.25s ease;
+      opacity: 1;
+    }
+
+    .legal-toc.collapsed .legal-toc-body {
+      max-height: 0;
+      opacity: 0;
     }
 
     .legal-toc-list {
@@ -539,8 +580,14 @@
   <section class="legal-content" aria-label="Terms of service content">
     <div class="container">
 
-      <nav class="legal-toc" aria-label="Table of contents">
-        <div class="legal-toc-title">Contents</div>
+      <nav class="legal-toc" id="legalToc" aria-label="Table of contents">
+        <div class="legal-toc-header" id="legalTocHeader" role="button" aria-expanded="true" aria-controls="legalTocBody" tabindex="0">
+          <div class="legal-toc-title">Contents</div>
+          <svg class="legal-toc-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="legal-toc-body" id="legalTocBody">
         <ol class="legal-toc-list">
           <li><a href="#section-1"><span>1.</span> Acceptance of Terms</a></li>
           <li><a href="#section-2"><span>2.</span> Description of Service</a></li>
@@ -558,6 +605,7 @@
           <li><a href="#section-14"><span>14.</span> Governing Law</a></li>
           <li><a href="#section-15"><span>15.</span> Contact</a></li>
         </ol>
+        </div>
       </nav>
 
       <div class="legal-section" id="section-1">
@@ -810,6 +858,51 @@
   mobileNavClose.addEventListener('click', closeMobileNav);
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && mobileNav.classList.contains('open')) closeMobileNav();
+  });
+
+  // TOC collapse on scroll
+  const toc = document.getElementById('legalToc');
+  const tocHeader = document.getElementById('legalTocHeader');
+  let manuallyToggled = false;
+  let isCollapsed = false;
+
+  function collapseToc() {
+    isCollapsed = true;
+    toc.classList.add('collapsed');
+    tocHeader.setAttribute('aria-expanded', 'false');
+  }
+
+  function expandToc() {
+    isCollapsed = false;
+    toc.classList.remove('collapsed');
+    tocHeader.setAttribute('aria-expanded', 'true');
+  }
+
+  window.addEventListener('scroll', function() {
+    if (manuallyToggled) return;
+    if (window.scrollY > 80) {
+      if (!isCollapsed) collapseToc();
+    } else {
+      if (isCollapsed) expandToc();
+    }
+  }, { passive: true });
+
+  tocHeader.addEventListener('click', function() {
+    manuallyToggled = true;
+    if (isCollapsed) {
+      expandToc();
+    } else {
+      collapseToc();
+    }
+    // Resume auto-behavior once user scrolls again
+    setTimeout(function() { manuallyToggled = false; }, 2000);
+  });
+
+  tocHeader.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      tocHeader.click();
+    }
   });
 </script>
 
