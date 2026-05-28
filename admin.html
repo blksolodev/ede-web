@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Èdè Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:      #0a0a0f;
+      --surface: #14141c;
+      --border:  #1e1e2e;
+      --text:    #e2e8f0;
+      --muted:   #64748b;
+      --green:   #4ade80;
+      --yellow:  #fbbf24;
+      --red:     #f87171;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    /* ── Login ── */
+    #login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px;
+      width: 360px;
+      text-align: center;
+    }
+    .login-box h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .login-box p  { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+    input[type=password] {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 12px;
+    }
+    input[type=password]:focus { border-color: var(--green); }
+    .btn-primary {
+      width: 100%;
+      background: var(--green);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .login-error { color: var(--red); font-size: 12px; margin-top: 10px; min-height: 16px; }
+
+    /* ── App shell ── */
+    #app {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 24px 64px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 6px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── Stat grid ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 960px) { .stat-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 16px;
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 10px;
+    }
+    .stat-value {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .stat-sub {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    /* ── Feedback panel ── */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 20px 24px;
+    }
+    .panel-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .panel-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .feed-count { color: var(--green); font-size: 12px; }
+
+    /* ── Filters ── */
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .filter-btn.active {
+      background: var(--green);
+      color: #000;
+      border-color: var(--green);
+      font-weight: 600;
+    }
+    .filter-btn:not(.active):hover { border-color: var(--muted); color: var(--text); }
+
+    /* ── Feedback cards ── */
+    .feedback-card {
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      border-left: 3px solid transparent;
+    }
+    .feedback-card:last-child { margin-bottom: 0; }
+    .mood-low  { background: rgba(248,113,113,0.07); border-color: var(--red); }
+    .mood-mid  { background: rgba(251,191,36,0.07);  border-color: var(--yellow); }
+    .mood-high { background: rgba(74,222,128,0.07);  border-color: var(--green); }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .card-stars       { font-size: 13px; letter-spacing: 1.5px; }
+    .card-rating-lbl  { font-size: 11px; color: var(--muted); }
+    .card-badge {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .card-time { font-size: 11px; color: var(--muted); margin-left: auto; }
+
+    .card-msg {
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 7px;
+    }
+    .card-msg.no-msg { color: var(--muted); font-style: italic; }
+    .card-device { font-size: 11px; color: var(--muted); }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ──────────────────────────────────────────────────────────── -->
+<div id="login">
+  <div class="login-box">
+    <h1>Èdè Admin</h1>
+    <p>Enter your admin password to continue</p>
+    <input type="password" id="pwd" placeholder="Password"
+           onkeydown="if(event.key==='Enter')tryLogin()">
+    <button class="btn-primary" onclick="tryLogin()">Sign In</button>
+    <div class="login-error" id="login-err"></div>
+  </div>
+</div>
+
+<!-- ── Dashboard ──────────────────────────────────────────────────────── -->
+<div id="app" style="display:none">
+  <div class="header">
+    <h1>Èdè Admin</h1>
+    <div class="header-right">
+      <span class="live-dot"></span>
+      <span id="refresh-label">Loading...</span>
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- Analytics -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Events</div>
+      <div class="stat-value" id="s-total">—</div>
+      <div class="stat-sub">Last 30 days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Unique Users</div>
+      <div class="stat-value" id="s-users">—</div>
+      <div class="stat-sub">Last 30 days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">App Opens</div>
+      <div class="stat-value" id="s-opens">—</div>
+      <div class="stat-sub">Last 30 days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Premium Purchases</div>
+      <div class="stat-value" id="s-premium">—</div>
+      <div class="stat-sub">Last 30 days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Feedback Submitted</div>
+      <div class="stat-value" id="s-feedback-ph">—</div>
+      <div class="stat-sub">Last 30 days</div>
+    </div>
+  </div>
+
+  <!-- Feedback feed -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Feedback Feed</span>
+      <span class="feed-count" id="feed-count"></span>
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('Bug Report',this)">Bug Report</button>
+      <button class="filter-btn" onclick="setFilter('Feature Request',this)">Feature Request</button>
+      <button class="filter-btn" onclick="setFilter('Pronunciation Issue',this)">Pronunciation Issue</button>
+      <button class="filter-btn" onclick="setFilter('Content Issue',this)">Content Issue</button>
+      <button class="filter-btn" onclick="setFilter('General Feedback',this)">General Feedback</button>
+    </div>
+    <div id="feed"></div>
+  </div>
+</div>
+
+<script>
+// ── Constants — set these before deploying ─────────────────────────────────
+const ADMIN_PASS               = 'AdeBadru1!'           // Change this
+const SUPABASE_URL             = 'https://mxnxhecxypztaidpwwcn.supabase.co'
+const SUPABASE_ANON_KEY        = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14bnhoZWN4eXB6dGFpZHB3d2NuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwODE2NzQsImV4cCI6MjA5MzY1NzY3NH0.95tMsMR_pwTp8RsikqGbN85TV0yGRNJfS4rjTmvqOko'
+const POSTHOG_PROJECT_ID       = '443451'               // PostHog project numeric ID
+const POSTHOG_PERSONAL_API_KEY = 'phc_xdxvVeiVDhRhd6pLebbvQLvJho8sZuVVDD4ZKtxjZhPE'         // Settings → Personal API Keys
+
+// ── Auth ───────────────────────────────────────────────────────────────────
+function tryLogin() {
+  const val = document.getElementById('pwd').value
+  if (val === ADMIN_PASS) {
+    sessionStorage.setItem('ede_admin', '1')
+    showApp()
+  } else {
+    document.getElementById('login-err').textContent = 'Incorrect password'
+    document.getElementById('pwd').value = ''
+    document.getElementById('pwd').focus()
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('ede_admin')
+  location.reload()
+}
+
+function showApp() {
+  document.getElementById('login').style.display = 'none'
+  document.getElementById('app').style.display   = 'block'
+  init()
+}
+
+if (sessionStorage.getItem('ede_admin') === '1') showApp()
+
+// ── Supabase ───────────────────────────────────────────────────────────────
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+let allFeedback  = []
+let activeFilter = 'all'
+
+async function loadFeedback() {
+  const { data } = await sb
+    .from('feedback')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(300)
+  if (data) { allFeedback = data; renderFeed() }
+}
+
+function subscribeRealtime() {
+  sb.channel('feedback-inserts')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'feedback' }, ({ new: row }) => {
+      allFeedback.unshift(row)
+      renderFeed()
+    })
+    .subscribe()
+}
+
+function setFilter(f, btn) {
+  activeFilter = f
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  renderFeed()
+}
+
+const MOOD_LABEL = { 1: 'Poor', 2: 'Fair', 3: 'Okay', 4: 'Good', 5: 'Excellent' }
+const MOOD_COLOR = { 1: 'var(--red)', 2: 'var(--red)', 3: 'var(--yellow)', 4: 'var(--green)', 5: 'var(--green)' }
+
+function stars(n) {
+  const s = Math.max(0, Math.min(5, n || 0))
+  return '★'.repeat(s) + '☆'.repeat(5 - s)
+}
+
+function moodClass(n) {
+  if (n <= 2) return 'mood-low'
+  if (n === 3) return 'mood-mid'
+  return 'mood-high'
+}
+
+function renderFeed() {
+  const list = activeFilter === 'all'
+    ? allFeedback
+    : allFeedback.filter(f => f.category === activeFilter)
+
+  document.getElementById('feed-count').textContent = list.length ? `(${list.length})` : ''
+
+  if (!list.length) {
+    document.getElementById('feed').innerHTML = '<div class="empty-state">No feedback found</div>'
+    return
+  }
+
+  document.getElementById('feed').innerHTML = list.slice(0, 100).map(f => {
+    const score   = f.mood_score || 0
+    const color   = MOOD_COLOR[score] || 'var(--muted)'
+    const devParts = [
+      f.device_model,
+      f.ios_version   ? `iOS ${f.ios_version}`   : null,
+      f.app_version   ? `v${f.app_version}`       : null,
+      f.current_screen,
+    ].filter(Boolean)
+
+    return `
+      <div class="feedback-card ${moodClass(score)}">
+        <div class="card-meta">
+          <span class="card-stars" style="color:${color}">${stars(score)}</span>
+          <span class="card-rating-lbl">${MOOD_LABEL[score] || ''}</span>
+          <span class="card-badge">${esc(f.category || 'General')}</span>
+          <span class="card-time">${timeAgo(f.created_at)}</span>
+        </div>
+        ${f.message
+          ? `<div class="card-msg">${esc(f.message)}</div>`
+          : `<div class="card-msg no-msg">No message</div>`}
+        ${devParts.length ? `<div class="card-device">${devParts.map(esc).join(' · ')}</div>` : ''}
+      </div>`
+  }).join('')
+}
+
+// ── PostHog query API ──────────────────────────────────────────────────────
+function phConfigured() {
+  return POSTHOG_PROJECT_ID       && !POSTHOG_PROJECT_ID.startsWith('YOUR_')
+      && POSTHOG_PERSONAL_API_KEY && !POSTHOG_PERSONAL_API_KEY.startsWith('YOUR_')
+}
+
+async function phQuery(sql) {
+  const res = await fetch(
+    `https://us.i.posthog.com/api/projects/${POSTHOG_PROJECT_ID}/query`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Bearer ${POSTHOG_PERSONAL_API_KEY}`,
+      },
+      body: JSON.stringify({ query: { kind: 'HogQLQuery', query: sql } }),
+    }
+  )
+  if (!res.ok) throw new Error(`PostHog ${res.status}`)
+  const data = await res.json()
+  return data.results?.[0]?.[0] ?? null
+}
+
+async function loadAnalytics() {
+  if (!phConfigured()) return
+
+  const specs = [
+    { id: 's-total',       sql: `SELECT count() FROM events WHERE timestamp >= now() - INTERVAL 30 DAY` },
+    { id: 's-users',       sql: `SELECT count(DISTINCT distinct_id) FROM events WHERE timestamp >= now() - INTERVAL 30 DAY` },
+    { id: 's-opens',       sql: `SELECT count() FROM events WHERE event = 'app_opened' AND timestamp >= now() - INTERVAL 30 DAY` },
+    { id: 's-premium',     sql: `SELECT count() FROM events WHERE event = 'premium_purchased' AND timestamp >= now() - INTERVAL 30 DAY` },
+    { id: 's-feedback-ph', sql: `SELECT count() FROM events WHERE event = 'feedback_submitted' AND timestamp >= now() - INTERVAL 30 DAY` },
+  ]
+
+  await Promise.all(specs.map(async ({ id, sql }) => {
+    try {
+      const val = await phQuery(sql)
+      const el  = document.getElementById(id)
+      if (el) el.textContent = val !== null ? Number(val).toLocaleString() : '—'
+    } catch (e) {
+      console.warn('PostHog query failed:', e)
+    }
+  }))
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function timeAgo(iso) {
+  const ms = Date.now() - new Date(iso)
+  if (ms < 60_000)         return 'just now'
+  if (ms < 3_600_000)      return `${Math.floor(ms / 60_000)}m ago`
+  if (ms < 86_400_000)     return `${Math.floor(ms / 3_600_000)}h ago`
+  if (ms < 7 * 86_400_000) return `${Math.floor(ms / 86_400_000)}d ago`
+  return new Date(iso).toLocaleDateString()
+}
+
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+// ── Init & auto-refresh ────────────────────────────────────────────────────
+async function refresh() {
+  await Promise.all([loadFeedback(), loadAnalytics()])
+  document.getElementById('refresh-label').textContent =
+    'Updated ' + new Date().toLocaleTimeString()
+}
+
+function init() {
+  refresh()
+  subscribeRealtime()
+  setInterval(refresh, 60_000)
+}
+</script>
+</body>
+</html>
